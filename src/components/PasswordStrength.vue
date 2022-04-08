@@ -2,7 +2,7 @@
   <transition name="pws-slide-up">
     <div v-if="isVisible" class="pws-container" ref="container">
       <div>
-        <input id="pws-checkbox-hasValidLength" type="checkbox" v-model="hasValidLength">
+        <input id="pws-checkbox-hasValidLength" type="checkbox" disabled v-model="hasValidLength">
         <label for="pws-checkbox-hasValidLength">{{t('pws.validLength')}}</label>
       </div>
       <div v-if="props.needCapital">
@@ -14,7 +14,7 @@
         <label for="pws-checkbox-needSpecialChar">{{t('pws.containsSpecialChar')}}</label>
       </div>
       <div v-if="props.needDigit">
-        <input id="pws-checkbox-needDigit" type="checkbox" v-model="containsDigit">
+        <input id="pws-checkbox-needDigit" type="checkbox" disabled v-model="containsDigit">
         <label for="pws-checkbox-needDigit">{{t('pws.containsDigit')}}</label>
       </div>
     </div>
@@ -126,15 +126,23 @@ onMounted(() => {
 
 <style>
   input[type=password] {
-    transition: background var(--pws-password-background-transition);
+    transition: background-color var(--pws-password-background-transition);
   }
-  input[type=password]:focus:valid {
+  input[type=password][autocomplete="new-password"]:required:focus:valid {
     background: rgba(0, 255, 1, 0.2);
     outline: 2px outset rgba(0,255,1,0.4);
+    background-image: url("../assets/hint-valid.svg");
+    background-repeat: no-repeat;
+    background-position: right 0.4em center;
+    background-size: 1.7em 1.7em;
   }
-  input[type=password]:focus:invalid {
+  input[type=password][autocomplete="new-password"]:required:focus:invalid {
     background: rgba(252,0,2,0.4);
     outline: 2px outset rgba(252,0,2,0.4);
+    background-image: url("../assets/hint-invalid.svg");
+    background-repeat: no-repeat;
+    background-position: right 0.4em center;
+    background-size: 1.7em 1.7em;
   }
 </style>
 
@@ -187,6 +195,7 @@ onMounted(() => {
   .pws-container {
     background: v-bind(backgroundColor);
     position: absolute;
+    z-index: 10;
     text-align: left;
     padding: 1rem;
     line-height: 1.3;
@@ -219,6 +228,7 @@ onMounted(() => {
     position: absolute;
     transition: v-bind(checkboxTransition);
     opacity: 0;
+    font-size: 12px;
   }
   input[type=checkbox]:checked::before {
     opacity: 1;
