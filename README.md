@@ -19,7 +19,11 @@ boxShadow: '0 0 2px #2c3e50',
 checkboxTransition: '0.6s',
 passwordInputTransition: '0.4s'
 ```
-Special characters are defined as follows and can be changed by providing a regular expression:
+Special characters are defined as follows and can be changed by providing a disjunction as regular expression:
 ```jsregexp
 specialCharacters: /!|§|\$|%|&|\/|\(|\)|=|\?|\*|\+|~|#|-|_|\.|:|,|;|\^|°/
 ```
+
+Inspect the password element with the used browser dev tools to see the html attributes set. When focusing the background changes to current validity state and the input element itself gets a hint attached. In addition, a container with all hints is shown beneath the password input.
+
+![Hints](./src/assets/hints.png)

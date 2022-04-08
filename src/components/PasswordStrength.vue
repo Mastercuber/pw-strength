@@ -117,7 +117,7 @@ function preparePasswordInputElement(el: HTMLInputElement) {
     el.minLength = props.minLength
     el.maxLength = props.maxLength
     el.size = props.maxLength
-    el.autocomplete = 'off'
+    el.autocomplete = 'new-password'
 
     let pattern = ''
     if (props.needDigit) pattern += '(?=.*[0-9])'
