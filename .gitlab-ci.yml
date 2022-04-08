@@ -45,5 +45,4 @@ deploy-job:      # This job runs in the deploy stage.
   script:
     - npm config set registry https://repo.avensio.de/repository/npm-registry/
     - npm config set _auth $NPM_AUTH
-    - cat ~/.npmrc
     - npm publish
