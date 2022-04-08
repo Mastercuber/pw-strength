@@ -5,13 +5,9 @@
         <input id="pws-checkbox-hasValidLength" type="checkbox" v-model="hasValidLength">
         <label for="pws-checkbox-hasValidLength">{{t('pws.validLength')}}</label>
       </div>
-      <div v-if="props.needLowerCaseChar">
-        <input id="pws-checkbox-needLowerCaseChar" type="checkbox" disabled v-model="containsLowerCaseChar">
-        <label for="pws-checkbox-needLowerCaseChar">{{t('pws.containsLowerCaseChar')}}</label>
-      </div>
-      <div v-if="props.needUpperCaseChar">
-        <input id="pws-checkbox-needUpperCaseChar" type="checkbox" disabled v-model="containsUpperCaseChar">
-        <label for="pws-checkbox-needUpperCaseChar">{{t('pws.containsUpperCaseChar')}}</label>
+      <div v-if="props.needCapital">
+        <input id="pws-checkbox-needUpperCaseChar" type="checkbox" disabled v-model="containsCapital">
+        <label for="pws-checkbox-needUpperCaseChar">{{t('pws.containsCapital')}}</label>
       </div>
       <div v-if="props.needSpecialChar">
         <input id="pws-checkbox-needSpecialChar" type="checkbox" disabled v-model="containsSpecialChar">
@@ -32,8 +28,7 @@ const { t } = useI18n()
 
 const hasValidLength = ref(false)
 const containsSpecialChar = ref(false)
-const containsUpperCaseChar = ref(false)
-const containsLowerCaseChar = ref(false)
+const containsCapital = ref(false)
 const containsDigit = ref(false)
 const isVisible = ref(false)
 const container = ref(null)
@@ -43,8 +38,7 @@ interface Props {
   minLength?: number,
   maxLength?: number,
   needSpecialChar?: boolean,
-  needUpperCaseChar?: boolean,
-  needLowerCaseChar?: boolean,
+  needCapital?: boolean,
   needDigit?: boolean,
   specialCharacters?: RegExp,
   // CSS Props
@@ -58,8 +52,7 @@ const props = withDefaults(defineProps<Props>(), {
   minLength: 10,
   maxLength: 140,
   needSpecialChar: true,
-  needUpperCaseChar: true,
-  needLowerCaseChar: true,
+  needCapital: true,
   needDigit: true,
   specialCharacters: /!|§|\$|%|&|\/|\(|\)|=|\?|\*|\+|~|#|-|_|\.|:|,|;|\^|°/,
   backgroundColor: 'rgba(220, 230, 240, 1)',
@@ -78,8 +71,7 @@ onMounted(() => {
 
 function setValidationMessage(el: HTMLInputElement) {
   if (!hasValidLength.value) return
-  if (!containsLowerCaseChar.value) el.setCustomValidity(t('pws.hint.needLowerCaseChar'))
-  else if (!containsUpperCaseChar.value) el.setCustomValidity(t('pws.hint.needUpperCaseChar'))
+  else if (!containsCapital.value) el.setCustomValidity(t('pws.hint.needCapital'))
   else if (!containsSpecialChar.value) el.setCustomValidity(t('pws.hint.needSpecialChar'))
   else if (!containsDigit.value) el.setCustomValidity(t('pws.hint.needDigit'))
 }
@@ -87,14 +79,12 @@ function setValidationMessage(el: HTMLInputElement) {
 function checkPw(event: { target: HTMLInputElement }) {
   const pw: string = event.target.value
   hasValidLength.value = pw.length >= props.minLength && pw.length <= props.maxLength
-  containsLowerCaseChar.value = /[a-z]/.test(pw)
-  containsUpperCaseChar.value = /[A-Z]/.test(pw)
+  containsCapital.value = /[A-Z]/.test(pw)
   containsSpecialChar.value = props.specialCharacters.test(pw)
   containsDigit.value = /[0-9]/.test(pw)
 
   if (hasValidLength.value
-      && containsLowerCaseChar.value
-      && containsUpperCaseChar.value
+      && containsCapital.value
       && containsSpecialChar.value
       && containsDigit.value)
     event.target.setCustomValidity('')
@@ -122,7 +112,7 @@ function preparePasswordInputElement(el: HTMLInputElement) {
     let pattern = ''
     if (props.needDigit) pattern += '(?=.*[0-9])'
     if (props.needLowerCaseChar) pattern += '(?=.*[a-z])'
-    if (props.needUpperCaseChar) pattern += '(?=.*[A-Z])'
+    if (props.needCapital) pattern += '(?=.*[A-Z])'
     if (props.needSpecialChar) pattern += `(?=.*(${props.specialCharacters.source}))`
     el.pattern = pattern + `.{${props.minLength},${props.maxLength}}`
   }
@@ -243,8 +233,7 @@ onMounted(() => {
   "de": {
     "pws": {
       "hint": {
-        "needLowerCaseChar": "Ein Kleinbuchstabe wird benötigt",
-        "needUpperCaseChar": "Ein Großbuchstabe wird benötigt",
+        "needCapital": "Ein Großbuchstabe wird benötigt",
         "needSpecialChar": "Ein Spezialzeichen wird benötigt",
         "needDigit": "Eine Zahl wird benötigt"
       },
@@ -252,16 +241,14 @@ onMounted(() => {
       "minLength": "Mindestlänge",
       "maxLength": "Maximallänge",
       "containsSpecialChar": "Beinhaltet Sonderzeichen",
-      "containsUpperCaseChar": "Beinhaltet Großbuchstabe",
-      "containsLowerCaseChar": "Beinhaltet Kleinbuchstabe",
+      "containsCapital": "Beinhaltet Großbuchstabe",
       "containsDigit": "Beinhaltet Zahl"
     }
   },
   "en": {
     "pws": {
       "hint": {
-        "needLowerCaseChar": "A lower case letter is required",
-        "needUpperCaseChar": "An upper case letter is required",
+        "needCapital": "An upper case letter is required",
         "needSpecialChar": "A special character is required",
         "needDigit": "A digit is required"
       },
@@ -269,9 +256,23 @@ onMounted(() => {
       "minLength": "Minimum length",
       "maxLength": "Maximum length",
       "containsSpecialChar": "Contains special character",
-      "containsUpperCaseChar": "Contains upper case letter",
-      "containsLowerCaseChar": "Contains lower case letter",
+      "containsCapital": "Contains capital",
       "containsDigit": "Contains digit"
+    }
+  },
+  "fr": {
+    "pws": {
+      "hint": {
+        "needCapital": "Au moins une lettre majuscule",
+        "needSpecialChar": "Au moins un caractère spécial",
+        "needDigit": "Au moins un chiffre"
+      },
+      "validLength": "Longueur valide",
+      "minLength": "Longueur minimale",
+      "maxLength": "Longueur maximale",
+      "containsSpecialChar": "Contient des caractères spéciaux",
+      "containsCapital": "Contient une majuscule",
+      "containsDigit": "Comprend le nombre"
     }
   }
 }

@@ -4,17 +4,31 @@ import PasswordStrength from './components/PasswordStrength.vue'
 
 <template>
   <form action="/">
-    <input id="password" type="password" required style="width: 50%; margin-bottom: 12px; padding: 12px; appearance: none" placeholder="***">
-    <PasswordStrength for="password"/>
+    <input
+      id="password"
+      type="password"
+      required
+      style="width: 50%; margin-bottom: 12px; padding: 12px; appearance: none"
+      placeholder="***"
+    >
+    <PasswordStrength for="password" />
     <input type="submit">
     <div>
       <h3>Irgendas</h3>
       <p>Noch was</p>
     </div>
-    <input type="email" required>
+    <input
+      type="email"
+      required
+    >
 
-    <input id="password2" type="password" required style="width: 50%">
-    <PasswordStrength for="password2"/>
+    <input
+      id="password2"
+      type="password"
+      required
+      style="width: 50%"
+    >
+    <PasswordStrength for="password2" />
   </form>
 </template>
 
