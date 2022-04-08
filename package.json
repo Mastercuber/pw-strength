@@ -1,0 +1,49 @@
+{
+  "name": "@avensio/pw-strength",
+  "version": "0.1.0",
+  "author": "Armin Kunkel",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build -c vite.lib.config.js",
+    "preview": "vite preview"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "vue",
+    "password",
+    "strength"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@git.avensio.de:armin/pw-strength.git"
+  },
+  "bugs": {
+    "url": "https://git.avensio.de/armin/pw-strength/-/issues"
+  },
+  "homepage": "https://git.avensio.de/armin/pw-strength#readme",
+  "main": "./dist/password-strength.umd.js",
+  "module": "./dist/password-strength.es.js",
+  "types": "./dist/PasswordStrength.vue.d.ts",
+  "exports": {
+    "./style.css": "./dist/style.css",
+    ".": {
+      "import": "./dist/password-strength.es.js",
+      "require": "./dist/password-strength.umd.js"
+    }
+  },
+  "publishConfig": {
+    "registry": "https://repo.avensio.de/repository/npm-registry/"
+  },
+  "devDependencies": {
+    "@intlify/vite-plugin-vue-i18n": "^3.3.1",
+    "@vitejs/plugin-vue": "^2.2.0",
+    "typescript": "^4.6.3",
+    "vite": "^2.8.0",
+    "vite-plugin-dts": "^1.0.5",
+    "vue": "^3.2.25",
+    "vue-i18n": "^9.1.9"
+  }
+}
