@@ -1,9 +1,10 @@
-<script async setup>
+<script setup>
 import PasswordStrength from './components/PasswordStrength.vue'
 </script>
 
 <template>
   <form action="/">
+    <label for="password" style="display: block">Passwort</label>
     <input
       id="password"
       type="password"
@@ -11,24 +12,16 @@ import PasswordStrength from './components/PasswordStrength.vue'
       style="width: 50%; margin-bottom: 12px; padding: 12px; appearance: none"
       placeholder="***"
     >
-    <PasswordStrength for="password" />
-    <input type="submit">
-    <div>
-      <h3>Irgendas</h3>
-      <p>Noch was</p>
-    </div>
+    <PasswordStrength for="password" confirm-id="passwordConfirmation"/>
+    <label for="passwordConfirmation" style="display: block">Passwort Bestätigung</label>
     <input
-      type="email"
-      required
-    >
-
-    <input
-      id="password2"
+      id="passwordConfirmation"
       type="password"
       required
+      autocomplete="off"
       style="width: 50%"
     >
-    <PasswordStrength for="password2" />
+    <input type="submit">
   </form>
 </template>
 

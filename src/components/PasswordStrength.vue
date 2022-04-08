@@ -5,9 +5,13 @@
         <input id="pws-checkbox-hasValidLength" type="checkbox" disabled v-model="hasValidLength">
         <label for="pws-checkbox-hasValidLength">{{t('pws.validLength')}}</label>
       </div>
+      <div v-if="props.needLowerCaseChar">
+        <input id="pws-checkbox-needLowerCaseChar" type="checkbox" disabled v-model="containsLowerCaseChar">
+        <label for="pws-checkbox-needLowerCaseChar">{{t('pws.containsLowerCaseChar')}}</label>
+      </div>
       <div v-if="props.needCapital">
-        <input id="pws-checkbox-needUpperCaseChar" type="checkbox" disabled v-model="containsCapital">
-        <label for="pws-checkbox-needUpperCaseChar">{{t('pws.containsCapital')}}</label>
+        <input id="pws-checkbox-needCapital" type="checkbox" disabled v-model="containsCapital">
+        <label for="pws-checkbox-needCapital">{{t('pws.containsCapital')}}</label>
       </div>
       <div v-if="props.needSpecialChar">
         <input id="pws-checkbox-needSpecialChar" type="checkbox" disabled v-model="containsSpecialChar">
@@ -28,16 +32,22 @@ const { t } = useI18n()
 
 const hasValidLength = ref(false)
 const containsSpecialChar = ref(false)
+const containsLowerCaseChar = ref(false)
 const containsCapital = ref(false)
 const containsDigit = ref(false)
 const isVisible = ref(false)
 const container = ref(null)
 
+let el: HTMLInputElement
+let confirmEl: HTMLInputElement
+
 interface Props {
   for: string,
+  confirmId?: string,
   minLength?: number,
   maxLength?: number,
   needSpecialChar?: boolean,
+  needLowerCaseChar?: boolean,
   needCapital?: boolean,
   needDigit?: boolean,
   specialCharacters?: RegExp,
@@ -52,6 +62,7 @@ const props = withDefaults(defineProps<Props>(), {
   minLength: 10,
   maxLength: 140,
   needSpecialChar: true,
+  needLowerCaseChar: true,
   needCapital: true,
   needDigit: true,
   specialCharacters: /!|§|\$|%|&|\/|\(|\)|=|\?|\*|\+|~|#|-|_|\.|:|,|;|\^|°/,
@@ -71,6 +82,7 @@ onMounted(() => {
 
 function setValidationMessage(el: HTMLInputElement) {
   if (!hasValidLength.value) return
+  else if (!containsLowerCaseChar.value) el.setCustomValidity(t('pws.hint.needLowerCaseChar'))
   else if (!containsCapital.value) el.setCustomValidity(t('pws.hint.needCapital'))
   else if (!containsSpecialChar.value) el.setCustomValidity(t('pws.hint.needSpecialChar'))
   else if (!containsDigit.value) el.setCustomValidity(t('pws.hint.needDigit'))
@@ -80,10 +92,12 @@ function checkPw(event: { target: HTMLInputElement }) {
   const pw: string = event.target.value
   hasValidLength.value = pw.length >= props.minLength && pw.length <= props.maxLength
   containsCapital.value = /[A-Z]/.test(pw)
+  containsLowerCaseChar.value = /[a-z]/.test(pw)
   containsSpecialChar.value = props.specialCharacters.test(pw)
   containsDigit.value = /[0-9]/.test(pw)
 
   if (hasValidLength.value
+      && containsLowerCaseChar.value
       && containsCapital.value
       && containsSpecialChar.value
       && containsDigit.value)
@@ -94,6 +108,23 @@ function checkPw(event: { target: HTMLInputElement }) {
 function positionHint(el: HTMLInputElement) {
   container.value.style.setProperty('--pws-hint-left', `${el.offsetLeft}px`)
   container.value.style.setProperty('--pws-hint-top', `${el.offsetTop + el.clientHeight + 15}px`)
+}
+
+function checkEquality() {
+  if (el.value === confirmEl.value) {
+    confirmEl.setCustomValidity('')
+    confirmEl.title = t('pws.passwordsMatch')
+  } else {
+    confirmEl.title = t('pws.passwordsNotMatch')
+    confirmEl.setCustomValidity(t('pws.passwordsNotMatch'))
+  }
+}
+
+function preparePasswordConfirmInputElement(el: HTMLInputElement) {
+  if (el) {
+    el.addEventListener('input', checkEquality)
+    el.autocomplete = 'off'
+  }
 }
 
 function preparePasswordInputElement(el: HTMLInputElement) {
@@ -119,16 +150,20 @@ function preparePasswordInputElement(el: HTMLInputElement) {
 }
 
 onMounted(() => {
-  const el: HTMLInputElement = document.getElementById(props.for) as HTMLInputElement
+  el = document.getElementById(props.for) as HTMLInputElement
+  confirmEl = document.getElementById(props.confirmId || '') as HTMLInputElement
   preparePasswordInputElement(el)
+  preparePasswordConfirmInputElement(confirmEl)
+  confirmEl.setAttribute('pws-confirm', '')
+  el.setAttribute('pws', '')
 })
 </script>
 
 <style>
-  input[type=password] {
+  input[type=password][pws], input[type=password][pws-confirm] {
     transition: background-color var(--pws-password-background-transition);
   }
-  input[type=password][autocomplete="new-password"]:required:focus:valid {
+  input[type=password][pws]:focus:valid, input[type=password][pws-confirm]:focus:valid {
     background: rgba(0, 255, 1, 0.2);
     outline: 2px outset rgba(0,255,1,0.4);
     background-image: url("../assets/hint-valid.svg");
@@ -136,7 +171,7 @@ onMounted(() => {
     background-position: right 0.4em center;
     background-size: 1.7em 1.7em;
   }
-  input[type=password][autocomplete="new-password"]:required:focus:invalid {
+  input[type=password][pws]:focus:invalid, input[type=password][pws-confirm]:focus:invalid {
     background: rgba(252,0,2,0.4);
     outline: 2px outset rgba(252,0,2,0.4);
     background-image: url("../assets/hint-invalid.svg");
@@ -243,14 +278,18 @@ onMounted(() => {
   "de": {
     "pws": {
       "hint": {
+        "needLowerCaseChar": "Ein Kleinbuchstabe wird benötigt",
         "needCapital": "Ein Großbuchstabe wird benötigt",
         "needSpecialChar": "Ein Spezialzeichen wird benötigt",
         "needDigit": "Eine Zahl wird benötigt"
       },
+      "passwordsNotMatch": "Passwörter stimmen nicht überein",
+      "passwordsMatch": "Passwörter stimmen überein",
       "validLength": "Gültige Länge",
       "minLength": "Mindestlänge",
       "maxLength": "Maximallänge",
       "containsSpecialChar": "Beinhaltet Sonderzeichen",
+      "containsLowerCaseChar": "Beinhaltet Kleinbuchstaben",
       "containsCapital": "Beinhaltet Großbuchstabe",
       "containsDigit": "Beinhaltet Zahl"
     }
@@ -258,14 +297,18 @@ onMounted(() => {
   "en": {
     "pws": {
       "hint": {
-        "needCapital": "An upper case letter is required",
+        "needLowerCaseChar": "A lower case letter is required",
+        "needCapital": "A capital is required",
         "needSpecialChar": "A special character is required",
         "needDigit": "A digit is required"
       },
+      "passwordsNotMatch": "Passwords do not match",
+      "passwordsMatch": "Passwords match",
       "validLength": "Valid length",
       "minLength": "Minimum length",
       "maxLength": "Maximum length",
       "containsSpecialChar": "Contains special character",
+      "containsLowerCaseChar": "Contains lower case letter",
       "containsCapital": "Contains capital",
       "containsDigit": "Contains digit"
     }
@@ -273,14 +316,18 @@ onMounted(() => {
   "fr": {
     "pws": {
       "hint": {
+        "needLowerCaseChar": "Une lettre minuscule est nécessaire",
         "needCapital": "Au moins une lettre majuscule",
         "needSpecialChar": "Au moins un caractère spécial",
         "needDigit": "Au moins un chiffre"
       },
+      "passwordsNotMatch": "Les mots de passe ne correspondent pas",
+      "passwordsMatch": "Les mots de passe correspondent",
       "validLength": "Longueur valide",
       "minLength": "Longueur minimale",
       "maxLength": "Longueur maximale",
       "containsSpecialChar": "Contient des caractères spéciaux",
+      "containsLowerCaseChar": "Contient des lettres minuscules",
       "containsCapital": "Contient une majuscule",
       "containsDigit": "Comprend le nombre"
     }
