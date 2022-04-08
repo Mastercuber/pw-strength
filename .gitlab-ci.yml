@@ -22,6 +22,9 @@ stages:          # List of stages for jobs, and their order of execution
 
 build-job:       # This job runs in the build stage, which runs first.
   stage: build
+  artifacts:
+    paths:
+      - dist/
   script:
     - npm config set registry https://repo.avensio.de/repository/npm-registry/
     - npm config set _auth $NPM_AUTH
@@ -42,7 +45,11 @@ lint-test-job:   # This job also runs in the test stage.
 
 deploy-job:      # This job runs in the deploy stage.
   stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+  artifacts:
+    - dist/
   script:
     - npm config set registry https://repo.avensio.de/repository/npm-registry/
     - npm config set _auth $NPM_AUTH
+    - npm i
+    - npm run build
     - npm publish
