@@ -3,7 +3,10 @@ This is a [Vue 3](https://vuejs.org/) component for strength checking a [passwor
 
 It uses [HTML 5](https://developer.mozilla.org/en-US/docs/Glossary/HTML5) Attributes - like maxLength, size, pattern - on a password input to validate the password. The `setCustomValidity` function from the [Constraint Validation API](https://developer.mozilla.org/en-US/docs/Web/API/Constraint_validation) is used to display a hint.
 
-An `id` of a password input is required. A second, optional, id can be provided as `confirmId`, which refers to the password confirmation (retype password) input element.  
+An `id` of a password input is required. A second, optional, id can be provided as `confirmId`, which refers to the password confirmation (retype password) input element. The password input elements aren't styled by default. To apply the `valid` and `invalid` state style, provide `pws` as an attribute on the primary password input and `pws-confirm` on the secondary input.
+
+When the icon should be displayed on the right instead of the left, provide one of the following classes on the input: `.icon-right, .icon-right-1 .icon-right-2`. 
+
 After mounting the component, the HTML Attributes are added to the input element and also listeners are attached for checking the password (`input`) and show(`focus`)/hide(`blur`) the hints.
 
 Here are all component properties and their default values:

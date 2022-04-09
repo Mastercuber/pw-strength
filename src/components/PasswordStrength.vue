@@ -137,7 +137,7 @@ function preparePasswordInputElement(el: HTMLInputElement) {
     el.addEventListener('blur', () => { isVisible.value = false })
     el.minLength = props.minLength
     el.maxLength = props.maxLength
-    el.size = props.maxLength
+    el.size = props.minLength * 3
     el.autocomplete = 'new-password'
 
     let pattern = ''
@@ -161,20 +161,38 @@ onMounted(() => {
 
 <style>
   input[type=password][pws], input[type=password][pws-confirm] {
-    transition: background-color var(--pws-password-background-transition);
+    transition: background-color var(--pws-password-background-transition), padding-left 0.4s;
   }
-  input[type=password][pws]:focus:valid, input[type=password][pws-confirm]:focus:valid {
+  input[type=password][pws]:not(.icon-right):not(.icon-right-1):not(.icon-right-2):focus:valid, input[type=password][pws-confirm]:not(.icon-right):not(.icon-right-1):not(.icon-right-2):focus:valid {
     background: rgba(0, 255, 1, 0.2);
     outline: 2px outset rgba(0,255,1,0.4);
     background-image: url("../assets/hint-valid.svg");
     background-repeat: no-repeat;
-    background-position: right 0.4em center;
+    background-position: left 0.4em center;
     background-size: 1.7em 1.7em;
+    padding-left: 2.4em !important;
   }
-  input[type=password][pws]:focus:invalid, input[type=password][pws-confirm]:focus:invalid {
+  input[type=password][pws]:not(.icon-right):not(.icon-right-1):not(.icon-right-2):focus:invalid, input[type=password][pws-confirm]:not(.icon-right):not(.icon-right-1):not(.icon-right-2):focus:invalid {
     background: rgba(252,0,2,0.4);
     outline: 2px outset rgba(252,0,2,0.4);
     background-image: url("../assets/hint-invalid.svg");
+    background-repeat: no-repeat;
+    background-position: left 0.4em center;
+    background-size: 1.7em 1.7em;
+    padding-left: 2.4em !important;
+  }
+  input[type=password][pws].icon-right:focus:invalid, input[type=password][pws-confirm].icon-right-1:focus:invalid, input[type=password][pws-confirm].icon-right-2:focus:invalid {
+    background: rgba(252,0,2,0.4);
+    outline: 2px outset rgba(252,0,2,0.4);
+    background-image: url("../assets/hint-invalid.svg");
+    background-repeat: no-repeat;
+    background-position: right 0.4em center;
+    background-size: 1.7em 1.7em;
+  }
+  input[type=password][pws].icon-right:focus:valid, input[type=password][pws-confirm].icon-right-1:focus:valid, input[type=password][pws-confirm].icon-right-2:focus:valid {
+    background: rgba(0, 255, 1, 0.2);
+    outline: 2px outset rgba(0,255,1,0.4);
+    background-image: url("../assets/hint-valid.svg");
     background-repeat: no-repeat;
     background-position: right 0.4em center;
     background-size: 1.7em 1.7em;
