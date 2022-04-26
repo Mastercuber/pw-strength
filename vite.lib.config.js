@@ -1,8 +1,8 @@
-import { defineConfig } from 'vite'
+import {defineConfig} from 'vite'
 import vueI18n from '@intlify/vite-plugin-vue-i18n'
 import vue from '@vitejs/plugin-vue'
 import dts from 'vite-plugin-dts'
-import { resolve } from 'path'
+import {resolve} from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -13,7 +13,7 @@ export default defineConfig({
       runtimeOnly: true,
       compositionOnly: true,
       defaultSFCLang: 'json',
-      globalSFCScope: true // dadurch kann mit useI18n({ useScope: 'global', inheritLocale: true }) auch auf die Übersetzungen dieser Komponente zugegriffen werden
+      globalSFCScope: true
     }),
     dts()
   ],
@@ -26,7 +26,6 @@ export default defineConfig({
       fileName: format => `password-strength.${format}.js`
     },
     ssr: false,
-    polyfillModulePreload: true,
     rollupOptions: {
       external: ['vue', 'vue-i18n'],
       output: {

@@ -26,8 +26,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, withDefaults, nextTick } from 'vue'
-import { useI18n } from 'vue-i18n'
+import {nextTick, onMounted, ref, withDefaults} from 'vue'
+import {useI18n} from 'vue-i18n'
+
 const { t } = useI18n()
 
 const hasValidLength = ref(false)
@@ -151,11 +152,12 @@ function preparePasswordInputElement(el: HTMLInputElement) {
 
 onMounted(() => {
   el = document.getElementById(props.for) as HTMLInputElement
-  confirmEl = document.getElementById(props.confirmId || '') as HTMLInputElement
   preparePasswordInputElement(el)
-  preparePasswordConfirmInputElement(confirmEl)
-  confirmEl.setAttribute('pws-confirm', '')
-  el.setAttribute('pws', '')
+
+  if ('confirmId' in props && props.confirmId && props.confirmId !== '') {
+    confirmEl = document.getElementById(props.confirmId) as HTMLInputElement
+    preparePasswordConfirmInputElement(confirmEl)
+  }
 })
 </script>
 
@@ -209,27 +211,16 @@ onMounted(() => {
   .pws-slide-up-enter-active::before {
     transition: top 0.4s ease;
   }
-  .pws-slide-up-enter-from {
+  .pws-slide-up-leave-to, .pws-slide-up-enter-from {
     opacity: 0;
     margin-top: 20px;
   }
-  .pws-slide-up-enter-to {
-    opacity: 1;
-    margin-top: 0;
-  }
-  .pws-slide-up-enter-active {
+  .pws-slide-up-enter-active, .pws-slide-up-leave-active {
     transition: margin-top 0.4s ease, opacity 0.4s ease;
   }
-  .pws-slide-up-leave-from {
+  .pws-slide-up-enter-to, .pws-slide-up-leave-from {
     opacity: 1;
     margin-top: 0;
-  }
-  .pws-slide-up-leave-to {
-    opacity: 0;
-    margin-top: 20px;
-  }
-  .pws-slide-up-leave-active {
-    transition: margin-top 0.4s ease, opacity 0.4s ease;
   }
 
   .pws-container::before {

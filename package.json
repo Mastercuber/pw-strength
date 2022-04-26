@@ -1,6 +1,7 @@
 {
   "name": "@avensio/pw-strength",
-  "version": "0.2.0",
+  "description": "Password Strength Checker using HTML 5 Attributes and the Validation API",
+  "version": "0.2.4",
   "author": "Armin Kunkel",
   "license": "MIT",
   "scripts": {
@@ -38,12 +39,13 @@
     "registry": "https://repo.avensio.de/repository/npm-registry/"
   },
   "devDependencies": {
-    "@intlify/vite-plugin-vue-i18n": "^3.3.1",
-    "@vitejs/plugin-vue": "^2.2.0",
+    "@babel/types": "^7.17.0",
+    "@intlify/vite-plugin-vue-i18n": "^3.4.0",
+    "@vitejs/plugin-vue": "^2.3.1",
     "typescript": "^4.6.3",
-    "vite": "^2.8.0",
-    "vite-plugin-dts": "^1.0.5",
-    "vue": "^3.2.25",
+    "vite": "^2.9.5",
+    "vite-plugin-dts": "^1.1.0",
+    "vue": "^3.2.33",
     "vue-i18n": "^9.1.9"
   }
 }

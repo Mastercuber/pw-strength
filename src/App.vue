@@ -1,6 +1,5 @@
 <script setup>
-import PasswordStrength from './components/PasswordStrength.vue'
-</script>
+import PasswordStrength from './components/PasswordStrength.vue'</script>
 
 <template>
   <form action="/">
@@ -11,6 +10,7 @@ import PasswordStrength from './components/PasswordStrength.vue'
       required
       style="width: 50%; margin-bottom: 12px; padding: 12px; appearance: none"
       placeholder="***"
+      pws
     >
     <PasswordStrength for="password" confirm-id="passwordConfirmation"/>
     <label for="passwordConfirmation" style="display: block">Passwort Bestätigung</label>
