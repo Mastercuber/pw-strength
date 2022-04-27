@@ -19,12 +19,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@git.avensio.de:armin/pw-strength.git"
+    "url": "https://github.com/Mastercuber/pw-strength.git"
   },
   "bugs": {
-    "url": "https://git.avensio.de/armin/pw-strength/-/issues"
+    "url": "https://github.com/Mastercuber/pw-strength/issues"
   },
-  "homepage": "https://git.avensio.de/armin/pw-strength#readme",
+  "homepage": "https://github.com/Mastercuber/pw-strength#readme",
   "main": "./dist/password-strength.umd.js",
   "module": "./dist/password-strength.es.js",
   "types": "./dist/PasswordStrength.vue.d.ts",
