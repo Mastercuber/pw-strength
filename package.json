@@ -1,7 +1,7 @@
 {
   "name": "@avensio/pw-strength",
   "description": "Password Strength Checker using HTML 5 Attributes and the Validation API",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "author": "Armin Kunkel",
   "license": "MIT",
   "scripts": {
