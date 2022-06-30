@@ -54,11 +54,11 @@ Special characters: **s = 21**
 min length: **m = 10**
 
 All symbols:  
-l +  c +  d +  s
+l + c + d + s  
 26 + 26 + 10 + 21 = 83
 
 when m = 8  
-keyspace: 83^m = 83^8 about 2.25^15, or **2^51**  
+keyspace: 83^m = 83^8 about 2.25 * 10^15, or **2^51**  
 key length: log2(83^8) about 51, so **51 bit**
 
 when m = 10  
@@ -105,7 +105,7 @@ when m = 20
 keyspace: 83^20 about 2.41 * 10^38, or **2^127.5**  
 key length: log2(83^20) about 127.5, so **128 bit**
 
-What I learned, future-proof is **about 128-bit** key length and **64-bit** is *searchable* in **days**.  
+What I learned, future-proof is **about 128-bit** key length and **64-bit** is *searchable* in **days** (with brute-force).  
 Therefore, to have a future-proof password, you need at least 20 Characters with the default configuration.
 
 This, of course, may vary with another source.
