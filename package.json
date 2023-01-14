@@ -1,0 +1,54 @@
+{
+  "name": "@avensio/pw-strength",
+  "description": "Password Strength Checker using HTML 5 Attributes and the Validation API",
+  "version": "0.3.1",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build -c vite.lib.config.js",
+    "build:ce": "vite build -c vite.ce.config.js",
+    "lint": "eslint . --fix",
+    "preview": "vite preview"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "vue",
+    "password",
+    "strength"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Mastercuber/pw-strength.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Mastercuber/pw-strength/issues"
+  },
+  "homepage": "https://mastercuber.github.io/pw-strength/",
+  "main": "./dist/password-strength.cjs.js",
+  "module": "./dist/password-strength.es.js",
+  "types": "./dist/PasswordStrength.vue.d.ts",
+  "exports": {
+    "./style.css": "./dist/style.css",
+    ".": {
+      "import": "./dist/password-strength.es.js",
+      "require": "./dist/password-strength.cjs.js"
+    }
+  },
+  "dependencies": {
+    "vue": "^3.2.33",
+    "vue-i18n": "^9.2"
+  },
+  "devDependencies": {
+    "@babel/types": "^7.17.0",
+    "@intlify/vite-plugin-vue-i18n": "^7.0.0",
+    "@typescript-eslint/parser": "^5.36.2",
+    "@vitejs/plugin-vue": "^4.0.0",
+    "eslint": "^8.23.0",
+    "eslint-plugin-vue": "^9.4.0",
+    "typescript": "^4.6.3",
+    "vite": "^4.0.2",
+    "vite-plugin-dts": "^1.1.0"
+  }
+}
